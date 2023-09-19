@@ -6,6 +6,7 @@
 #include <QGraphicsView>
 #include <cmath>
 #include <iostream>
+#include <bits/stdc++.h>
 
 class MainWindow : public QMainWindow
 {
