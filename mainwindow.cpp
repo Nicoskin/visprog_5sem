@@ -19,7 +19,7 @@ inline bool intersect_1 (int a, int b, int c, int d) {
 bool intersect (pt a, pt b, pt c, pt d) {
     return /*intersect_1 (a.x, b.x, c.x, d.x)
         && intersect_1 (a.y, b.y, c.y, d.y)
-        &&*/ area(a,b,c) * area(a,b,d) <= 0
+        && */area(a,b,c) * area(a,b,d) <= 0
         && area(c,d,a) * area(c,d,b) <= 0;
 }
 
@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
         int min_dbm = -60;
         int max_dbm = -50;
 
-        float scale = 2 ; //1 пискель = 1/scale метров
+        float scale = 0.01 ; //1 пискель = 1/scale метров
 
         QPainter p(&map);
 
@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
         a.x = 500;
         a.y = 300;
         pt b;
-        b.x = 550;
+        b.x = 500;
         b.y = 400;
 
         pt c;
@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
                 D.x = i;
                 D.y = j;
 
-                if (intersect(a,b,c,D) != 0) d = d + 80;//+80 дальность за стенкой
+                if (intersect(a,b,c,D) != 0) d = d + (000*(1/scale));//+80 дальность за стенкой
 
                 PL = 28 + 22*log10(d) + 20*log10(fc);
                 dBm = ant + tx - PL;
@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
 
                 if (dBm < min_dbm) min_dbm = dBm;
 
-                dBm = ((dBm * -1) -8) * 3.86; // коэффициент можно менять 1.875=-144blue
+                dBm = ((dBm * -1) -44) * 2.55; // коэффициент можно менять 1.875=-144blue
 
                 if(dBm < 0) p.setPen(QColor(255,0,0, 255));
                 else if(dBm < 64 ) p.setPen(QColor(255, dBm*4, 0, 255));
@@ -93,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent)
         std::cout << " max=" << max_dbm<< "    разница=" << k << "    коэффициент=" << 255/k << "\n";
         p.end();
         scene->addPixmap(map);
-        scene->addLine(a.x, a.y, b.x, b.y);
+        //scene->addLine(a.x, a.y, b.x, b.y);
         QGraphicsView* view = new QGraphicsView(scene);
         setCentralWidget(view);
 }
